@@ -65,41 +65,6 @@ function generateCSS(name, type, value) {
 	return css;
 }
 
-//friends
-	let total = 0;
-	let prio1 = 0;
-	let prio2 = 0;
-	let bff = 0;
-	let dating = 0;
-	Legacy.database.all("SELECT * FROM friends WHERE userid=$userid", {$userid: target}, function(err, targ) {
-		if (targ && targ[0] && targ[0].friend) {
-			total = targ.length;
-			Legacy.database.all("SELECT * FROM friends WHERE userid=$userid AND bestfriend=1", {$userid: target}, function(err, targb) {
-				if (targb && targb[0] && targb[0].friend) prio1 = targb.length;
-				Legacy.database.all("SELECT * FROM friends WHERE userid=$userid AND dating=1", {$userid: target}, function(err, targd) {
-					if (targd && targd[0] && targd[0].friend) prio2 = targd.length;
-					Legacy.database.all("SELECT * FROM friends WHERE userid=$userid", {$userid: old}, function(err, prev) {
-						if (prev && prev[0] && prev[0].friend) {
-							for (let i in prev) {
-								if (total < 51) {
-									if (prev[i].bestfriend === 1 && prio1 < 3) {
-										bff = 1;
-									} else if (prev[i].dating === 1 && prio2 < 1) dating = 1;
-									Legacy.database.run("INSERT INTO friends(userid, friend, bestfriend, dating) VALUES ($userid, $friend, $bff, $dating)", {$userid: target, $friend: prev[i].friend, $bff: bff, $dating: dating}, function(err, done) {
-										Legacy.database.run("DELETE FROM friends WHERE userid=$userid AND friend=$friend", {$userid: old, $friend: prev[i].friend}, function(err, asdf) {});
-									});
-									if (bff === 1 || dating === 1) {
-										bff = 0;
-										dating = 0;
-									}
-								}
-							}
-						}
-					});
-				});
-			});
-		}
-	});
 //inventory
 	let items1 = {};
 	let items2 = {};
