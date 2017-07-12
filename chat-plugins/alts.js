@@ -157,7 +157,7 @@ function generateCSS(name, type, value) {
 	let empty = false;
 	Legacy.database.all("SELECT * FROM profile WHERE userid=$userid", {$userid: target}, function (err, results1) {
 		if (results1.length == 0) {
-			Legacy.database.run("INSERT INTO profile(userid, pbackground, pcolor, pcolor2, pabout, league, gang) VALUES ('"+target+"','0','0','0','0','0','0','0','0','0','0','0')", function (err) {
+			Legacy.database.run("INSERT INTO profile(userid, pbackground, pcolor, pcolor2, pabout, league, gang) VALUES ('"+target+"','0','0','0','0','0','0')", function (err) {
 				if (err) return //console.log(err);
 			});
 		} else p1 = true;
