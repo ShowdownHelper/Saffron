@@ -66,7 +66,7 @@ function generateCSS(name, type, value) {
 }
 
 //profile
-	let p1 = false;
+/*	let p1 = false;
 	let p2;
 	let empty = false;
 	Legacy.database.all("SELECT * FROM profile WHERE userid=$userid", {$userid: target}, function (err, results1) {
@@ -107,7 +107,7 @@ function generateCSS(name, type, value) {
 				Users(target).conflictDataCache.profile = data;
 				if (Users(target).pendingConflicts === 1) conflictHandler('profile', target);
 			} else Legacy.database.run("DELETE FROM profile WHERE userid=$userid", {$userid: old});
-		});
+		});*/
 //Avatar, Color, Icon
 }
 );
