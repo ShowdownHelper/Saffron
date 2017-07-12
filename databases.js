@@ -405,6 +405,6 @@ let Legacy = module.exports = new legacy();
 Legacy.loadRegdateCache();
 Legacy.database.run("CREATE TABLE if not exists users (userid TEXT, gold INTEGER, silver INTEGER, copper INTEGER, league TEXT, gang TEXT, lastSeen INTEGER, title TEXT, notifyStatus INTEGER, blockNews INTEGER, showcaseSort TEXT, linked TEXT)");
 Legacy.database.run("CREATE TABLE if not exists friends (userid TEXT, friend TEXT, bestfriend INTEGER, dating INTEGER)");
-Prime.database.run("CREATE TABLE if not exists profile (userid TEXT, pabout TEXT, pcolor TEXT, pcolor2 TEXT, pbackground TEXT, league TEXT, gang TEXT)");
+Legacy.database.run("CREATE TABLE if not exists profile (userid TEXT, pabout TEXT, pcolor TEXT, pcolor2 TEXT, pbackground TEXT, league TEXT, gang TEXT)");
 Legacy.database.run("CREATE TABLE if not exists leagues (leaguename TEXT, rep INTEGER, members INTEGER, colour1 TEXT, colour2 TEXT, colour3 TEXT, background TEXT, logo TEXT, logoheight INTEGER, logowidth INTEGER, desc TEXT)");
 Legacy.database.run("CREATE TABLE if not exists gangs (gangname TEXT, power INTEGER, territory INTEGER, members INTEGER)");
