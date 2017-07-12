@@ -263,7 +263,7 @@ exports.commands = {
 		user.updateIdentity();
 		user.canCustomSymbol = false;
 		this.sendReply('Your symbol is now ' + target + '. It will be saved until you log off for more than an hour, or the server restarts. You can remove it with /resetsymbol');
-		});
+		}
 	},
 
 	removesymbol: 'resetsymbol',
