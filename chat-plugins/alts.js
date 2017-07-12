@@ -107,10 +107,10 @@ function generateCSS(name, type, value) {
 				Users(target).conflictDataCache.profile = data;
 				if (Users(target).pendingConflicts === 1) conflictHandler('profile', target);
 			} else Legacy.database.run("DELETE FROM profile WHERE userid=$userid", {$userid: old});
-		});*/
+		});
 //Avatar, Color, Icon
 }
-);
+);*/
 function shiftMain(userid, alts, i, callback){
 	Legacy.database.run("UPDATE users SET linked=$linked WHERE userid=$userid", {$linked: ((userid) ? "a."+userid : ''), $userid: alts[i]}, function(err, done) {
 		if (!userid) unlink(alts[i]);
