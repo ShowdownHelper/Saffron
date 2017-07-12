@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 const fs = require('fs');
 const moment = require('moment');
@@ -275,3 +275,4 @@ exports.commands = {
 		this.sendReply('Your symbol has been removed.');
 	},
 };
+*/
