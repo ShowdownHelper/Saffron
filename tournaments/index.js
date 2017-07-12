@@ -37,6 +37,9 @@ class Tournament {
 
 		this.id = room.id;
 		this.room = room;
+		this.prizeGold = 0;
+		this.prizeSilver = 0;
+		this.prizeCopper = 0;
 		this.title = Dex.getFormat(format).name + ' tournament';
 		this.allowRenames = false;
 		this.players = Object.create(null);
@@ -901,6 +904,41 @@ class Tournament {
 			generator: this.generator.name,
 			bracketData: this.getBracketData(),
 		}));
+		let winner = '';
+		let runnerUp = false;
+		if (data.indexOf(',') >= 0) {
+			data = data.split(',');
+			winner = data[0];
+		} else {
+			winner = data;
+		}
+
+		if (data2['bracketData']['rootNode']) {
+			if (data2['bracketData']['rootNode']['children']) {
+				if (data2['bracketData']['rootNode']['children'][0]['team'] !== winner) runnerUp = data2['bracketData']['rootNode']['children'][0]['team'];
+				if (data2['bracketData']['rootNode']['children'][1]['team'] !== winner) runnerUp = data2['bracketData']['rootNode']['children'][1]['team'];
+			}
+		}
+		let tourSize = this.generator.users.size;
+		let goldPayout = (tourSize < 50 ? Math.round(0.05 * tourSize) : 5);
+		let silverPayout = (tourSize < 50 ? Math.round(0.5 * tourSize) : 50);
+		let copperPayout = (tourSize < 50 ? Math.round(2 * tourSize) : 500);
+		if (this.prizeGold + this.prizeSilver + this.prizeCopper !== 0 && tourSize >= 4) {
+			this.room.add('|raw|<b>' + Legacy.nameColor(winner, false) + ' has won the tournament for <font color=#24678d>' + this.prizeGold + '</font> Gold, <font color=#24678d>' + this.prizeSilver + '</font> Silver, and <font color=#24678d>' + this.prizeCopper + '</font> Copper!');
+			Economy.writeMoney(toId(winner), Number(this.prizeGold), Number(this.prizeSilver), Number(this.prizeCopper));
+		} else if (this.room.isOfficial && tourSize >= 4) {
+			let gold = goldPayout;
+			let silver = silverPayout;
+			let copper = copperPayout;
+
+			this.room.add('|raw|<b>' + Legacy.nameColor(winner, false) + ' has also won <font color=#24678d>' + gold + '</font> Gold, <font color=#24678d>' + silver + '</font> Silver, and <font color=#24678d>' + copper + '</font> Copper for winning the tournament!</b>');
+			Economy.writeMoney(toId(winner), money, () => {
+				if (runnerUp) Economy.writeMoney(toId(runnerUp), Math.round(gold / 2), Math.round(silver / 2), Math.round(copper / 2));
+			});
+			if (runnerUp) {
+				this.room.add('|raw|<b>' + Legacy.nameColor(runnerUp, false) + ' has also won <font color=#24678d>' + Math.round(gold / 2) + '</font> Gold, <font color=#24678d>' + Math.round(silver / 2) + '</font> Silver, and <font color=#24678d>' + Math.round(copper / 2) + '</font> Copper for coming in second!</b>');
+			}
+		}
 		this.isEnded = true;
 		if (this.autoDisqualifyTimer) clearTimeout(this.autoDisqualifyTimer);
 		delete exports.tournaments[this.room.id];
