@@ -1,4 +1,4 @@
-/*'use strict'
+'use strict'
 
 //LOAD OTHER GLOBALS//
 
@@ -69,7 +69,7 @@ class legacy {
         this.database = new sqlite3.Database('config/users.db');
 		
 		//MISC//
-		this.serverOwners = ['legacysaffron', 'finny'];
+		this.serverOwners = ['legacysaffron', 'finny, showdownhelper'];
 		try {
 			this.autoJoinRooms = JSON.parse(fs.readFileSync('config/autojoin.json', 'utf8'));
 		} catch (e) {
@@ -265,7 +265,7 @@ class legacy {
         
     getTitle (userid, callback) {
 		if (!callback) return false;
-		userid = Alts.getMain(toId(userid));
+		userid = toId(userid);
 		Legacy.database.all("SELECT title FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
 			if (err) return //console.log(err);
 			callback(((rows[0] && rows[0].title) ? rows[0].title : ""));
@@ -273,7 +273,7 @@ class legacy {
 	}
 
 	setTitle (userid, title, callback) {
-	userid = Alts.getMain(toId(userid));
+	userid = toId(userid);
 		Legacy.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) { 
 			if (rows.length < 1) {
 				Legacy.database.run("INSERT INTO users(userid, title) VALUES ($userid, $title)", {$userid: userid, $title: title}, function (err) {
@@ -346,7 +346,7 @@ class legacy {
 	}
 	
 	checkNews (userid, callback) {
-		userid = Alts.getMain(toId(userid));
+		userid = toId(userid);
 		Legacy.database.all("SELECT blockNews FROM users WHERE userid=$userid", {$userid: userid}, function (err, results) {
 			if (!results || !results[0]) {
                 Legacy.database.all("INSERT INTO users(userid) VALUES ($userid)", {$userid: userid});
@@ -407,4 +407,4 @@ Legacy.database.run("CREATE TABLE if not exists users (userid TEXT, gold INTEGER
 Legacy.database.run("CREATE TABLE if not exists friends (userid TEXT, friend TEXT, bestfriend INTEGER, dating INTEGER)");
 Legacy.database.run("CREATE TABLE if not exists profile (userid TEXT, pabout TEXT, pcolor TEXT, pcolor2 TEXT, pbackground TEXT, league TEXT, gang TEXT)");
 Legacy.database.run("CREATE TABLE if not exists leagues (leaguename TEXT, rep INTEGER, members INTEGER, colour1 TEXT, colour2 TEXT, colour3 TEXT, background TEXT, logo TEXT, logoheight INTEGER, logowidth INTEGER, desc TEXT)");
-Legacy.database.run("CREATE TABLE if not exists gangs (gangname TEXT, power INTEGER, territory INTEGER, members INTEGER)");*/
+Legacy.database.run("CREATE TABLE if not exists gangs (gangname TEXT, power INTEGER, territory INTEGER, members INTEGER)");
