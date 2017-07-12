@@ -920,9 +920,9 @@ class Tournament {
 			}
 		}
 		let tourSize = this.generator.users.size;
-		let goldPayout = (tourSize < 50 ? Math.round(0.05 * tourSize) : 5);
-		let silverPayout = (tourSize < 50 ? Math.round(0.5 * tourSize) : 50);
-		let copperPayout = (tourSize < 50 ? Math.round(2 * tourSize) : 500);
+		let goldPayout = (tourSize < 64 ? Math.trunc(0.05 * tourSize) : 5);
+		let silverPayout = (tourSize < 64 ? Math.trunc(0.5 * tourSize) : 50);
+		let copperPayout = (tourSize < 64 ? Math.round(5 * tourSize) : 500);
 		if (this.prizeGold + this.prizeSilver + this.prizeCopper !== 0 && tourSize >= 4) {
 			this.room.add('|raw|<b>' + Legacy.nameColor(winner, false) + ' has won the tournament for <font color=#24678d>' + this.prizeGold + '</font> Gold, <font color=#24678d>' + this.prizeSilver + '</font> Silver, and <font color=#24678d>' + this.prizeCopper + '</font> Copper!');
 			Economy.writeMoney(toId(winner), Number(this.prizeGold), Number(this.prizeSilver), Number(this.prizeCopper));
