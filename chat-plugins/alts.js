@@ -65,57 +65,6 @@ function generateCSS(name, type, value) {
 	return css;
 }
 
-//inventory
-	let items1 = {};
-	let items2 = {};
-	let combined = {};
-	let thisitem;
-	let owned;
-	let ownedlength;
-	//get inventories of each userid
-	Legacy.database.all("SELECT * FROM inventory WHERE userid=$userid", {$userid: old}, function(err, items) {
-		if (items && items[0]) {
-			owned = Object.getOwnPropertyNames(items[0]);
-			ownedlength = owned.length;
-			Legacy.database.all("SELECT * FROM inventory WHERE userid=$userid", {$userid: target}, function(err, itemst) {
-				if (itemst && itemst[0] && itemst[0].userid) {
-					//assemble array of objects containing user inventories
-					for (let i = 0; i < ownedlength; i++) {
-						if (Boolean(items[0][owned[i]]) && items[0][owned[i]] > 0 && owned[i] !== 'userid') items1[owned[i]] = {id: owned[i], amt: items[0][owned[1]]};
-						if (Boolean(itemst[0][owned[i]]) && itemst[0][owned[i]] > 0 && owned[i] !== 'userid') items2[owned[i]] = {id: owned[i], amt: itemst[0][owned[1]]};
-					}
-					
-					combined = items1;
-					
-					for (let i = 0; i < items2.length; i++) {
-						thisitem = items2[i].id;
-						if (combined[thisitem]) {
-							combined[thisitem].amt = (+combined[thisitem].amt + +items2[thisitem].amt);
-						} else combined[thisitem] = items2[thisitem];
-					}
-					items1 = false;
-					items2 = false;
-					Legacy.database.run("DELETE FROM inventory WHERE userid=$userid1 OR userid=$userid2", {$userid1: old, $userid2: target}, function(err, results) {
-						if (!err) {
-							let SQL = "INSERT INTO inventory(userid, ";
-							let SQL2 = "VALUES ($userid, ";
-							let itemIds = Object.getOwnPropertyNames(combined);
-							for (let x = 0; x < itemIds.length; x++) {
-								SQL += itemIds[x];
-								SQL2 += combined[itemIds[x]].toString;
-								if (x != (itemIds.length - +1)) {
-									SQL += ", ";
-									SQL2 += ", ";
-								}
-							}
-							SQL += ") " + SQL2 + ")";
-							Legacy.database.run(SQL, {$userid: target});
-						}
-					});
-				}
-			});
-		}
-	});
 //profile
 	let p1 = false;
 	let p2;
