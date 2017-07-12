@@ -1,4 +1,4 @@
-/*'use strict';
+'use strict';
 
 const fs = require('fs');
 const moment = require('moment');
@@ -9,7 +9,7 @@ let serverIp = '144.217.82.98';
 let Economy = global.Economy = {
 	readMoney: function (userid, callback) {
 		if (!callback) return false;
-		userid = Alts.getMain(toId(userid));
+		userid = toId(userid);
 		Legacy.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
 			let gold = ((rows[0] && rows[0].gold) ? rows[0].gold : 0);
 			callback(gold);
@@ -20,7 +20,7 @@ let Economy = global.Economy = {
 		});
 	},
 	writeMoney: function (userid, copperamount, silveramount, goldamount, callback) {
-		userid = Alts.getMain(toId(userid));
+		userid = toId(userid);
 		Legacy.database.all("SELECT * FROM users WHERE userid=$userid", {$userid: userid}, function (err, rows) {
 			if (rows.length < 1) {
 				Legacy.database.run("INSERT INTO users(userid, gold, silver, copper) VALUES ($userid, $goldamount, $silveramount, $copperamount)", {$userid: userid, $goldamount: goldamount, $silveramount: silveramount, $copperamount: copperamount}, function (err) {
@@ -275,4 +275,3 @@ exports.commands = {
 		this.sendReply('Your symbol has been removed.');
 	},
 };
-*/
