@@ -6,6 +6,8 @@ const moment = require('moment');
 const MD5 = require('MD5');
 const http = require('http');
 
+let Legacy = sqlite3.Database('./databases/Legacy.db');
+
 let colourCache = {};
 Legacy.customColours = {};
 let regdateCache = {};
