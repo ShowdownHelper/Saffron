@@ -1,5 +1,5 @@
 // Code by Legacy Saffron. Note of appreciation for Light's help with a few bits.
-
+/*
 'strict mode';
 
 const fs = require('fs');
@@ -53,3 +53,4 @@ class Gang extends Guild {
   Legacy.run("INSERT INTO Gangs (name, members, power, territory) VALUES ($name, 1, 0, 0)", {$name: this.name}, (err) => { if (err) console.log(`MakeGang Error: ${err}`)});
   }
 }
+*/
