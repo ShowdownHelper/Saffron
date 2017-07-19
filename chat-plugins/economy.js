@@ -75,16 +75,16 @@ function getCopper(user) {
 
 let Economy = global.Economy = {
 	readMoney: function (user, callback) {
-    user = toId(user);
+		user = toId(user);
 		if (!callback) return false;
-    let platinum = getPlatinum();
-    callback(platinum);
-    let gold = getGold();
-    callback(gold);
-    let silver = getSilver();
-    callback(silver);
-    let copper = getCopper();
-    callback(copper);
+	let platinum = getPlatinum();
+	callback(platinum);
+	let gold = getGold();
+	callback(gold);
+	let silver = getSilver();
+	callback(silver);
+	let copper = getCopper();
+	callback(copper);
   },
   writeMoney: function (user, copperamount, silveramount, goldamount, platinumamount, callback) {
     user = toId(user);
@@ -189,26 +189,31 @@ exports.commands = {
 	gm: 'givemoney',
 	givemoney: function (target, room, user) {
 		if (!user.can('rangeban')) return false;
-		if (!target) return this.sendReply("Usage: /givemoney [user], [goldamount], [silveramount], [copperamount].");
+		if (!target) return this.sendReply("Usage: /givemoney [user], [platinumamount], [goldamount], [silveramount], [copperamount].");
 		let splitTarget = target.split(',');
-		if (!splitTarget[3]) return this.sendReply("Usage: /givemoney [user], [goldamount], [silveramount], [copperamount].");
+		if (!splitTarget[4]) return this.sendReply("Usage: /givemoney [user], [platinumamount], [goldamount], [silveramount], [copperamount].");
 		for (let u in splitTarget) splitTarget[u] = splitTarget[u].trim();
 
 		let targetUser = splitTarget[0];
 		if (toId(targetUser).length < 1) return this.sendReply("/givemoney - [user] may not be blank.");
 		if (toId(targetUser).length > 19) return this.sendReply("/givemoney - [user] can't be longer than 19 characters.");
 
-		let goldamount = Math.round(Number(splitTarget[1]));
+		let platinumamount = Math.round(Number(splitTarget[1]));
+		if (isNaN(platinumamount)) return this.sendReply("/givemoney - [platinumamount] must be a number.");
+		if (platinumamount > 99) return this.sendReply("/givemoney - You can't give more than 99 Gold at a time.");
+		if (platinumamount.length < 1) return this.sendReply("/givemoney - [platinumamount] may not be blank.");
+
+		let goldamount = Math.round(Number(splitTarget[2]));
 		if (isNaN(goldamount)) return this.sendReply("/givemoney - [goldamount] must be a number.");
 		if (goldamount > 99) return this.sendReply("/givemoney - You can't give more than 99 Gold at a time.");
 		if (goldamount.length < 1) return this.sendReply("/givemoney - [goldamount] may not be blank.");
 
-		let silveramount = Math.round(Number(splitTarget[2]));
+		let silveramount = Math.round(Number(splitTarget[3]));
 		if (isNaN(silveramount)) return this.sendReply("/givemoney - [silveramount] must be a number.");
 		if (silveramount > 99) return this.sendReply("/givemoney - You can't give more than 99 Silver at a time.");
 		if (silveramount.length < 1) return this.sendReply("/givemoney - [silveramount] may not be blank.");
 
-		let copperamount = Math.round(Number(splitTarget[3]));
+		let copperamount = Math.round(Number(splitTarget[4]));
 		if (isNaN(copperamount)) return this.sendReply("/givemoney - [amount] must be a number.");
 		if (copperamount > 99) return this.sendReply("/givemoney - You can't give more than 99 Copper at a time.");
 		if (copperamount.length < 1) return this.sendReply("/givemoney - [copperamount] may not be blank.");
