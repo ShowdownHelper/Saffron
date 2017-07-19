@@ -4,7 +4,6 @@
 /node_modules
 /eslint-cache
 /chat-plugins/private.js
-/chat-plugins/databases/*
 npm-debug.log
 .eslintcache
 
